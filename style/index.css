@@ -1,0 +1,53 @@
+body {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+/* 
+    总container
+    调整字体
+    flex box
+    以列排列的flex box
+ */
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(73, 71, 71);
+}
+
+/* 分割线 */
+.seperators {
+    margin: 0;
+    padding: 0;
+}
+/* 
+    标题格式
+    margin 0
+    padding 0
+*/
+.titles {
+    margin: 0;
+    padding: 0;
+    
+}
+
+a {
+    font-size: large;
+    color: white;
+    padding: 2rem;
+    margin: 0;
+}
+
+#links {
+    border-radius: 15;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.link {
+    padding: 2rem;
+}

@@ -1,0 +1,123 @@
+# Notes {ignore=true}
+
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+- [CSS](#css)
+  - [Flexbox](#flexbox)
+- [MacOS commands](#macos-commands)
+  - [Environment variables](#environment-variables)
+  - [Command/Bash](#commandbash)
+- [Linux Command](#linux-command)
+  - [Check Linux	Release Version](#check-linux-release-version)
+- [MacOS command line tools](#macos-command-line-tools)
+  - [Homebrew](#homebrew)
+  - [Tree](#tree)
+- [Vim cheat sheet (Often used)](#vim-cheat-sheet-often-used)
+  - [often used atomic commands](#often-used-atomic-commands)
+  - [often used combination commands](#often-used-combination-commands)
+- [Google Cloud](#google-cloud)
+  - [Google Cloud Function](#google-cloud-function)
+
+<!-- /code_chunk_output -->
+## CSS
+### Flexbox
+- **flexbox layout**(use on parent elements): `display: flex;`
+- **flexbox direction**(either row or column):`flex-direction`
+	`row` horizontal direction
+	`column` vertical direction
+	`column-reverse` horizontal reverse direction
+	`row-reverse` vertical reverse direction
+- **与row和column相同方向的对齐方式** `justify-content` 
+	`space-around`
+	`space-between`
+	`flex-start`
+	`flex-end`
+	`center`
+- **与row和column垂直的对齐方式**`align-items`
+	`stretch` same height(width) for all elements
+	`center`
+	`baseline`
+	`flex-start`
+	`flex-end`
+
+---
+
+## MacOS commands
+### Environment variables
+- make environment configuration file take effect
+```bash
+	source ~/.bash_profile
+```
+**happy**
+
+### Command/Bash
+- Check ongoing process on a port（进程）
+```bash
+	lsof -i:8000 # Check processes on a specific port
+	kill 85877 # Terminate process with given PID
+```
+---
+
+## Linux Command
+### Check Linux	Release Version
+```bash
+	cat /etc/*-release
+```
+
+---
+## MacOS command line tools
+### Homebrew
+- Homebrew location on machine: `/opt/homebrew`  
+	Homebrew command：`brew`
+
+### Tree
+- Command: `tree`
+	list the file structure of the root directory.
+
+## Vim cheat sheet (Often used)
+### often used atomic commands
+- save and quit: `:wq`
+- undo: `u`
+- enter insert mode: `i`
+- exit mode: key `esc`
+
+### often used combination commands
+- Clear whole document: `gg` + `dg` in normal mode
+
+
+## Google Cloud
+### Google Cloud Function
+- Depoly function (**region can be changed**)
+```bash
+$ gcloud functions deploy python-http-function \
+--gen2 \
+--runtime=python312 \
+--region=europe-west1 \
+--source=. \
+--entry-point=hello_get \
+--trigger-http
+```
+
+- Query function URL
+  - 2nd gen
+	```bash
+	$ gcloud functions describe YOUR_FUNCTION_NAME \
+	--gen2 \
+	--region=YOUR_FUNCTION_REGION \
+	--format="value(serviceConfig.uri)"
+	```
+  - 1st gen
+	```bash
+	$ gcloud functions describe YOUR_FUNCTION_NAME \
+	--format="value(httpsTrigger.url)"
+	```
+**Better to export the URL to environment variable**
+
+- Call deployed functions, `gcloud auto print-identity` will return the identity token required for authentication
+```bash
+$ curl -X POST "${FUNCTION_URL}/echo" \
+  -H "Authorization: bearer $(gcloud auth print-identity-token)" \
+  --data 'Hello function!'
+```
