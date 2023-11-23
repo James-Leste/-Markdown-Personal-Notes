@@ -32,12 +32,32 @@
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>    <span class="token function">git</span> <span class="token function">add</span> <span class="token operator">&lt;</span>filename<span class="token operator"><span class="token file-descriptor important">1</span>&gt;</span> <span class="token operator">&lt;</span>filename<span class="token operator"><span class="token file-descriptor important">2</span>&gt;</span> <span class="token punctuation">..</span>.
     <span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span> <span class="token comment"># add all files in the root path</span>
 </code></pre><ul>
-<li>Adding a .gitignore</li>
+<li>Add a <code>.gitignore</code> to ignore files to be included</li>
 </ul>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>    <span class="token comment"># add suffix or filename that you don't want the git to track</span>
     *.txt
     *.md
     *.py
+</code></pre><ul>
+<li>See <code>Difference</code> (<strong>do it before staging</strong>)</li>
+</ul>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>    <span class="token comment"># To see difference between before and after modification</span>
+    <span class="token function">git</span> <span class="token function">diff</span> <span class="token operator">&lt;</span>filename<span class="token operator">&gt;</span>
+
+    <span class="token comment"># You can omit the filename to see all modifications</span>
+    <span class="token function">git</span> <span class="token function">diff</span>
+</code></pre><ul>
+<li>Unstage files (remove staged file from staging)</li>
+</ul>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>    <span class="token function">git</span> restore <span class="token parameter variable">--staged</span> <span class="token operator">&lt;</span>filename<span class="token operator">&gt;</span>
+</code></pre><ul>
+<li>Remove files (should be staged)</li>
+</ul>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>    <span class="token function">git</span> <span class="token function">rm</span> <span class="token operator">&lt;</span>filename<span class="token operator">&gt;</span>
+</code></pre><ul>
+<li>Rename files (should be staged)</li>
+</ul>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>    <span class="token function">git</span> <span class="token function">mv</span> <span class="token operator">&lt;</span>filename_original<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>filename_target<span class="token operator">&gt;</span>
 </code></pre>
       </div>
       
