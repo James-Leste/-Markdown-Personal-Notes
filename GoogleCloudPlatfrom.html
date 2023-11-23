@@ -2,7 +2,7 @@
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>Notes &lbrace;ignore&equals;true&rbrace;</title>
+        <title>Google Cloud Platform</title>
         <style>
 /* From extension vscode.github */
 /*---------------------------------------------------------------------------------------------
@@ -90,7 +90,8 @@ aside > *:last-child {
 }
 
 </style>
-        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
 <style>
@@ -114,113 +115,45 @@ aside > *:last-child {
         
     </head>
     <body class="vscode-body vscode-dark">
-        <h1 id="notes-ignoretrue">Notes {ignore=true}</h1>
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
-<!-- code_chunk_output -->
+        <h1 id="google-cloud-platform">Google Cloud Platform</h1>
+<h2 id="google-cloud-function">Google Cloud Function</h2>
 <ul>
-<li><a href="#notes-ignoretrue">Notes {ignore=true}</a>
-<ul>
-<li><a href="#css">CSS</a>
-<ul>
-<li><a href="#flexbox">Flexbox</a></li>
+<li>Depoly function (<strong>region can be changed</strong>)</li>
 </ul>
-</li>
-<li><a href="#macos-commands">MacOS commands</a>
-<ul>
-<li><a href="#environment-variables">Environment variables</a></li>
-<li><a href="#commandbash">Command/Bash</a></li>
-</ul>
-</li>
-<li><a href="#linux-command">Linux Command</a>
-<ul>
-<li><a href="#check-linuxrelease-version">Check Linux	Release Version</a></li>
-</ul>
-</li>
-<li><a href="#macos-command-line-tools">MacOS command line tools</a>
-<ul>
-<li><a href="#homebrew">Homebrew</a></li>
-<li><a href="#tree">Tree</a></li>
-</ul>
-</li>
-<li><a href="#vim-cheat-sheet-often-used">Vim cheat sheet (Often used)</a>
-<ul>
-<li><a href="#often-used-atomic-commands">often used atomic commands</a></li>
-<li><a href="#often-used-combination-commands">often used combination commands</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<!-- /code_chunk_output -->
-<h2 id="css">CSS</h2>
-<h3 id="flexbox">Flexbox</h3>
-<ul>
-<li><strong>flexbox layout</strong>(use on parent elements): <code>display: flex;</code></li>
-<li><strong>flexbox direction</strong>(either row or column):<code>flex-direction</code>
-<code>row</code> horizontal direction
-<code>column</code> vertical direction
-<code>column-reverse</code> horizontal reverse direction
-<code>row-reverse</code> vertical reverse direction</li>
-<li><strong>与row和column相同方向的对齐方式</strong> <code>justify-content</code>
-<code>space-around</code>
-<code>space-between</code>
-<code>flex-start</code>
-<code>flex-end</code>
-<code>center</code></li>
-<li><strong>与row和column垂直的对齐方式</strong><code>align-items</code>
-<code>stretch</code> same height(width) for all elements
-<code>center</code>
-<code>baseline</code>
-<code>flex-start</code>
-<code>flex-end</code></li>
-</ul>
-<hr>
-<h2 id="macos-commands">MacOS commands</h2>
-<h3 id="environment-variables">Environment variables</h3>
-<ul>
-<li>make environment configuration file take effect</li>
-</ul>
-<pre><code class="language-bash">	<span class="hljs-built_in">source</span> ~/.bash_profile
+<pre><code class="language-bash">$ gcloud <span class="hljs-built_in">functions</span> deploy python-http-function \
+--gen2 \
+--runtime=python312 \
+--region=europe-west1 \
+--<span class="hljs-built_in">source</span>=. \
+--entry-point=hello_get \
+--trigger-http
 </code></pre>
-<p><strong>happy</strong></p>
-<h3 id="commandbash">Command/Bash</h3>
 <ul>
-<li>Check ongoing process on a port（进程）</li>
-</ul>
-<pre><code class="language-bash">	lsof -i:8000 <span class="hljs-comment"># Check processes on a specific port</span>
-	<span class="hljs-built_in">kill</span> 85877 <span class="hljs-comment"># Terminate process with given PID</span>
+<li>Query function URL
+<ul>
+<li>2nd gen<pre><code class="language-bash">$ gcloud <span class="hljs-built_in">functions</span> describe YOUR_FUNCTION_NAME \
+--gen2 \
+--region=YOUR_FUNCTION_REGION \
+--format=<span class="hljs-string">&quot;value(serviceConfig.uri)&quot;</span>
 </code></pre>
-<hr>
-<h2 id="linux-command">Linux Command</h2>
-<h3 id="check-linuxrelease-version">Check Linux	Release Version</h3>
-<pre><code class="language-bash">	<span class="hljs-built_in">cat</span> /etc/*-release
+</li>
+<li>1st gen<pre><code class="language-bash">$ gcloud <span class="hljs-built_in">functions</span> describe YOUR_FUNCTION_NAME \
+--format=<span class="hljs-string">&quot;value(httpsTrigger.url)&quot;</span>
 </code></pre>
-<hr>
-<h2 id="macos-command-line-tools">MacOS command line tools</h2>
-<h3 id="homebrew">Homebrew</h3>
-<ul>
-<li>Homebrew location on machine: <code>/opt/homebrew</code><br>
-Homebrew command：<code>brew</code></li>
+</li>
 </ul>
-<h3 id="tree">Tree</h3>
-<ul>
-<li>Command: <code>tree</code>
-list the file structure of the root directory.</li>
+</li>
 </ul>
-<h2 id="vim-cheat-sheet-often-used">Vim cheat sheet (Often used)</h2>
-<h3 id="often-used-atomic-commands">often used atomic commands</h3>
+<p><strong>Better to export the URL to environment variable</strong></p>
 <ul>
-<li>save and quit: <code>:wq</code></li>
-<li>undo: <code>u</code></li>
-<li>enter insert mode: <code>i</code></li>
-<li>exit mode: key <code>esc</code></li>
+<li>Call deployed functions, <code>gcloud auto print-identity</code> will return the identity token required for authentication</li>
 </ul>
-<h3 id="often-used-combination-commands">often used combination commands</h3>
-<ul>
-<li>Clear whole document: <code>gg</code> + <code>dg</code> in normal mode</li>
-</ul>
+<pre><code class="language-bash">$ curl -X POST <span class="hljs-string">&quot;<span class="hljs-variable">${FUNCTION_URL}</span>/echo&quot;</span> \
+  -H <span class="hljs-string">&quot;Authorization: bearer <span class="hljs-subst">$(gcloud auth print-identity-token)</span>&quot;</span> \
+  --data <span class="hljs-string">&#x27;Hello function!&#x27;</span>
+</code></pre>
 
-        
+        <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
         
     </body>
     </html>
