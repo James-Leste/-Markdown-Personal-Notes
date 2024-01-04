@@ -1,6 +1,6 @@
 # Deno cheatsheet for Web Software Development Course
 
-## 1. Components of a request
+## 1. Getting components of request (Deno)
 **request body**
 The request is sent to `localhost` port 7777 with a pathname `/hello`.
 ```bash
@@ -24,8 +24,75 @@ curl "http://localhost:7777?param1=value1&param2=value2"
 # TODO
 ```
 - **Request parameters:** `new URL(request.url).searchParams`, return `URLSearchParams` instance. `get(paramName)`and `getAll()` can be use to retrieve value
+
+Deno example web application
+```javascript
+const handleRequest = (request) => {
+    const url = new URL(request.url); //Full path object
+    const pathname = fullPath.pathname; // request path
+    const method = request.method; // request method
+    const params = url.searchParams; // list of all parameters
+    const exampleParam = params.get("example"); // get param value by name
+
+    return new Response(`Full Path: ${request.url}\nPathname: ${pathname}\nMethod: ${method}\nParam: ${exampleParam}`);
+};
+
+Deno.serve(handleRequest);
+```
+## 2. Hono framework
+> Hono is a web framework that provides routing, middlewares, and other utilities that help in web development.
+> Unlike Deno web applications(`app.js`), those created using Hono have at least one `app.js` and entry point `app-run.js` 
+
+**Example application**
+**`app.js`**
+```javascript
+import { Hono } from "https://deno.land/x/hono@v3.7.4/mod.ts";
+
+const app = new Hono();
+
+app.get("/", (c) => c.text("Hello World!"));
+/*
+    (c) => c.text("Hello World!")
+is the simple way of saying
+    (c) => {return c.text("Hello World!");}
+*/
+
+export default app;
+```
+**`app-run.js`**
+```javascript
+import app from "./app.js";
+
+Deno.serve(app.fetch);
+```
+**Getting components of a request(Hono)**
+`app.js`
+```javascript
+import { Hono } from "https://deno.land/x/hono@v3.7.4/mod.ts";
+
+const app = new Hono();
+
+app.get("/:id", (c) => {
+    // Get request method
+    const method = c.req.method;
+
+    // Get '/hello' from 'localhost:8000/hello'
+    const path = c.req.path;
+
+    // Get param value by name
+    const param1 = c.req.query("param1");
+
+    // Get path param by name
+    // In this case, if the request is localhost:8000/1, the value is 1;
+    const id = c.req.param("id");
+
+    return c.text("Hello World!");
+});
+
+export default app;
+```
 ---
-## 2. Serve static files (html, css, js)
+## 3. Serve static files (html, css, js)
 **File structure**
 ```tree
 .
@@ -51,7 +118,7 @@ curl "http://localhost:7777?param1=value1&param2=value2"
     serve(handleRequest, { port: 7777 });
 ```
 ---
-## 3. `Deno.dev` deployment
+## 4. `Deno.dev` deployment
 **Deno deploy website**
 > A github account is needed to link to the deno account.
 > <a href="https://deno.com/deploy">Deno Deploy: https://deno.com/deploy</a>
@@ -79,7 +146,7 @@ deployctl deploy --prod --token=${ACCESS_TOKEN} --project=${PROJECT_NAME} app-ru
 
 ---
 
-## 4. `Eta` view template
+## 5. `Eta` view template
 > Templates (or view templates) are HTML-like pages with places into which data from the server can be injected.
 
 **Eta syntax**
@@ -88,4 +155,5 @@ When using `<%=`, the html content will be escaped. In this case, the output wil
 ```eta
     <%= it.variable %>
 ```
+
 

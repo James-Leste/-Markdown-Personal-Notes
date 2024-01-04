@@ -25,7 +25,7 @@
       <div class="crossnote markdown-preview  ">
       
 <h1 id="deno-cheatsheet-for-web-software-development-course">Deno cheatsheet for Web Software Development Course </h1>
-<h2 id="1-components-of-a-request">1. Components of a request </h2>
+<h2 id="1-getting-components-of-request-deno">1. Getting components of request (Deno) </h2>
 <p><strong>request body</strong><br>
 The request is sent to <code>localhost</code> port 7777 with a pathname <code>/hello</code>.</p>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token function">curl</span> http://localhost:7777/hello
@@ -45,8 +45,67 @@ Parameters can be included in either <strong>pathname</strong> or <strong>reques
 </code></pre><ul>
 <li><strong>Request parameters:</strong> <code>new URL(request.url).searchParams</code>, return <code>URLSearchParams</code> instance. <code>get(paramName)</code>and <code>getAll()</code> can be use to retrieve value</li>
 </ul>
-<hr>
-<h2 id="2-serve-static-files-html-css-js">2. Serve static files (html, css, js) </h2>
+<p>Deno example web application</p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript javascript"><code><span class="token keyword keyword-const">const</span> <span class="token function-variable function">handleRequest</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">request</span><span class="token punctuation">)</span> <span class="token arrow operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword keyword-const">const</span> url <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token property-access">url</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//Full path object</span>
+    <span class="token keyword keyword-const">const</span> pathname <span class="token operator">=</span> fullPath<span class="token punctuation">.</span><span class="token property-access">pathname</span><span class="token punctuation">;</span> <span class="token comment">// request path</span>
+    <span class="token keyword keyword-const">const</span> method <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token property-access">method</span><span class="token punctuation">;</span> <span class="token comment">// request method</span>
+    <span class="token keyword keyword-const">const</span> params <span class="token operator">=</span> url<span class="token punctuation">.</span><span class="token property-access">searchParams</span><span class="token punctuation">;</span> <span class="token comment">// list of all parameters</span>
+    <span class="token keyword keyword-const">const</span> exampleParam <span class="token operator">=</span> params<span class="token punctuation">.</span><span class="token method function property-access">get</span><span class="token punctuation">(</span><span class="token string">"example"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// get param value by name</span>
+
+    <span class="token keyword control-flow keyword-return">return</span> <span class="token keyword keyword-new">new</span> <span class="token class-name">Response</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Full Path: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>request<span class="token punctuation">.</span><span class="token property-access">url</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">\nPathname: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>pathname<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">\nMethod: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>method<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">\nParam: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>exampleParam<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token maybe-class-name">Deno</span><span class="token punctuation">.</span><span class="token method function property-access">serve</span><span class="token punctuation">(</span>handleRequest<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><h2 id="2-hono-framework">2. Hono framework </h2>
+<blockquote>
+<p>Hono is a web framework that provides routing, middlewares, and other utilities that help in web development.<br>
+Unlike Deno web applications(<code>app.js</code>), those created using Hono have at least one <code>app.js</code> and entry point <code>app-run.js</code></p>
+</blockquote>
+<p><strong>Example application</strong><br>
+<strong><code>app.js</code></strong></p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript javascript"><code><span class="token keyword module keyword-import">import</span> <span class="token imports"><span class="token punctuation">{</span> <span class="token maybe-class-name">Hono</span> <span class="token punctuation">}</span></span> <span class="token keyword module keyword-from">from</span> <span class="token string">"https://deno.land/x/hono@v3.7.4/mod.ts"</span><span class="token punctuation">;</span>
+
+<span class="token keyword keyword-const">const</span> app <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token class-name">Hono</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+app<span class="token punctuation">.</span><span class="token method function property-access">get</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">c</span><span class="token punctuation">)</span> <span class="token arrow operator">=&gt;</span> c<span class="token punctuation">.</span><span class="token method function property-access">text</span><span class="token punctuation">(</span><span class="token string">"Hello World!"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/*
+    (c) =&gt; c.text("Hello World!")
+is the simple way of saying
+    (c) =&gt; {return c.text("Hello World!");}
+*/</span>
+
+<span class="token keyword module keyword-export">export</span> <span class="token keyword module keyword-default">default</span> app<span class="token punctuation">;</span>
+</code></pre><p><strong><code>app-run.js</code></strong></p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript javascript"><code><span class="token keyword module keyword-import">import</span> <span class="token imports">app</span> <span class="token keyword module keyword-from">from</span> <span class="token string">"./app.js"</span><span class="token punctuation">;</span>
+
+<span class="token maybe-class-name">Deno</span><span class="token punctuation">.</span><span class="token method function property-access">serve</span><span class="token punctuation">(</span>app<span class="token punctuation">.</span><span class="token property-access">fetch</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><p><strong>Getting components of a request(Hono)</strong><br>
+<code>app.js</code></p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript javascript"><code><span class="token keyword module keyword-import">import</span> <span class="token imports"><span class="token punctuation">{</span> <span class="token maybe-class-name">Hono</span> <span class="token punctuation">}</span></span> <span class="token keyword module keyword-from">from</span> <span class="token string">"https://deno.land/x/hono@v3.7.4/mod.ts"</span><span class="token punctuation">;</span>
+
+<span class="token keyword keyword-const">const</span> app <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token class-name">Hono</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+app<span class="token punctuation">.</span><span class="token method function property-access">get</span><span class="token punctuation">(</span><span class="token string">"/:id"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">c</span><span class="token punctuation">)</span> <span class="token arrow operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Get request method</span>
+    <span class="token keyword keyword-const">const</span> method <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token property-access">req</span><span class="token punctuation">.</span><span class="token property-access">method</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Get '/hello' from 'localhost:8000/hello'</span>
+    <span class="token keyword keyword-const">const</span> path <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token property-access">req</span><span class="token punctuation">.</span><span class="token property-access">path</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Get param value by name</span>
+    <span class="token keyword keyword-const">const</span> param1 <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token property-access">req</span><span class="token punctuation">.</span><span class="token method function property-access">query</span><span class="token punctuation">(</span><span class="token string">"param1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Get path param by name</span>
+    <span class="token comment">// In this case, if the request is localhost:8000/1, the value is 1;</span>
+    <span class="token keyword keyword-const">const</span> id <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token property-access">req</span><span class="token punctuation">.</span><span class="token method function property-access">param</span><span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword control-flow keyword-return">return</span> c<span class="token punctuation">.</span><span class="token method function property-access">text</span><span class="token punctuation">(</span><span class="token string">"Hello World!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword module keyword-export">export</span> <span class="token keyword module keyword-default">default</span> app<span class="token punctuation">;</span>
+</code></pre><hr>
+<h2 id="3-serve-static-files-html-css-js">3. Serve static files (html, css, js) </h2>
 <p><strong>File structure</strong></p>
 <pre data-role="codeBlock" data-info="tree" class="language-tree tree"><code>.
 ├── app.js
@@ -67,7 +126,7 @@ Parameters can be included in either <strong>pathname</strong> or <strong>reques
 
     <span class="token function">serve</span><span class="token punctuation">(</span>handleRequest<span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token literal-property property">port</span><span class="token operator">:</span> <span class="token number">7777</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre><hr>
-<h2 id="3-denodev-deployment">3. <code>Deno.dev</code> deployment </h2>
+<h2 id="4-denodev-deployment">4. <code>Deno.dev</code> deployment </h2>
 <p><strong>Deno deploy website</strong></p>
 <blockquote>
 <p>A github account is needed to link to the deno account.<br>
@@ -90,7 +149,7 @@ Both <code>ACCESS_TOKEN</code> and <code>PROJECT_NAME</code> can be either passe
 Deployment using <code>deployctl</code> is deploy a preview version by default. If you want to put the latest deployment into production, you can use <code>--prod</code> flag.</p>
 <pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code>deployctl deploy <span class="token parameter variable">--prod</span> <span class="token parameter variable">--token</span><span class="token operator">=</span><span class="token variable">${ACCESS_TOKEN}</span> <span class="token parameter variable">--project</span><span class="token operator">=</span><span class="token variable">${PROJECT_NAME}</span> app-run.js
 </code></pre><hr>
-<h2 id="4-eta-view-template">4. <code>Eta</code> view template </h2>
+<h2 id="5-eta-view-template">5. <code>Eta</code> view template </h2>
 <blockquote>
 <p>Templates (or view templates) are HTML-like pages with places into which data from the server can be injected.</p>
 </blockquote>
